@@ -1,10 +1,18 @@
 import express from 'express'
+const {createTodo, updateTodo } = require("./types");
 
 const app = express();
 const port = 3000;
 
 app.post('/todo', (req, res) => {
-    res.send('todo!');
+    const createPayLoad = req.body;
+    const parsedPayLoad = createTodo.safeParse(createPayload);
+    if(!parsedPayLoad.success) {
+        res.status(411).json({
+            msg: "you sent the wrong inputs"
+        })
+    }
+
 });
 
 app.get('/todos', (req, res) => {
@@ -12,7 +20,13 @@ app.get('/todos', (req, res) => {
 });
     
 app.put('/completed', (req, res) => {
-    res.send('completed');
+    const updatePayload = req.body;
+    const parsedPayLoad = updateTodo.safeParse(updatePayload)
+    if(parsedPayLoad.success) {
+        res.status(411).json({
+            msg: "you sent the wrong inputs"
+        })
+    }
 });    
 
 app.listen(port, () => {
